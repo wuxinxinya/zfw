@@ -1,11 +1,12 @@
 import React from 'react';
+import { Button } from 'antd-mobile';
 
 
 
 function App() {
   return (
     <div className="App">
-      12388
+      <Button type="primary">按钮</Button>
     </div>
   );
 }
