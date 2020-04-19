@@ -23,3 +23,7 @@ ul,li {
     
     box-sizing: border-box; 
 }
+.App a,.home a{
+    display: inline-block;
+    margin: 20px;
+}
