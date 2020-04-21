@@ -10,9 +10,9 @@ import App from './App';
 import './assets/fonts/iconfont.css'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  //严格模式 <React.StrictMode>
+  <App />,
+  // </React.StrictMode>,
   document.getElementById('root')
 );
 

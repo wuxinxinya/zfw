@@ -16,3 +16,4 @@ const TabBarConfig = [
     icon: 'icon-my'
   },
 ]
+export default TabBarConfig;
