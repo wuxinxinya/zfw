@@ -36,19 +36,9 @@ class Home extends Component {
             <TabBar.Item
               title="首页"
               key="首页"
-              icon={<div style={{
-                width: '22px',
-                height: '22px',
-                background: 'url(https://zos.alipayobjects.com/rmsportal/sifuoDUQdAFKAVcFGROC.svg) center center /  21px 21px no-repeat'
-              }}
-              />
+              icon={<i className="iconfont icon-ind" />
               }
-              selectedIcon={<div style={{
-                width: '22px',
-                height: '22px',
-                background: 'url(https://zos.alipayobjects.com/rmsportal/iSrlOTqrKddqbOmlvUfq.svg) center center /  21px 21px no-repeat'
-              }}
-              />
+              selectedIcon={<i className="iconfont icon-ind" />
               }
               selected={this.state.selectedTab === 'blueTab'}
 
@@ -62,20 +52,10 @@ class Home extends Component {
             </TabBar.Item>
             <TabBar.Item
               icon={
-                <div style={{
-                  width: '22px',
-                  height: '22px',
-                  background: 'url(https://gw.alipayobjects.com/zos/rmsportal/BTSsmHkPsQSPTktcXyTV.svg) center center /  21px 21px no-repeat'
-                }}
-                />
+                <i className="iconfont icon-findHouse" />
               }
               selectedIcon={
-                <div style={{
-                  width: '22px',
-                  height: '22px',
-                  background: 'url(https://gw.alipayobjects.com/zos/rmsportal/ekLecvKBnRazVLXbWOnE.svg) center center /  21px 21px no-repeat'
-                }}
-                />
+                <i className="iconfont icon-findHouse" />
               }
               title="找房"
               key="找房"
@@ -90,20 +70,10 @@ class Home extends Component {
             </TabBar.Item>
             <TabBar.Item
               icon={
-                <div style={{
-                  width: '22px',
-                  height: '22px',
-                  background: 'url(https://zos.alipayobjects.com/rmsportal/psUFoAMjkCcjqtUCNPxB.svg) center center /  21px 21px no-repeat'
-                }}
-                />
+                <i className="iconfont icon-my" />
               }
               selectedIcon={
-                <div style={{
-                  width: '22px',
-                  height: '22px',
-                  background: 'url(https://zos.alipayobjects.com/rmsportal/IIRLrXXrFAhXVdhMWgUI.svg) center center /  21px 21px no-repeat'
-                }}
-                />
+                <i className="iconfont icon-my" />
               }
               title="我的"
               key="我的"
