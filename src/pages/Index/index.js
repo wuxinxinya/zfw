@@ -1,7 +1,8 @@
 /***默认首页*/
 import React, { Component } from 'react';
 import { Carousel } from 'antd-mobile';
-import axios from 'axios'
+// import axios from 'axios'
+import myAxios from '../../utils/axios'
 class Index extends Component {
     state = {
         // 轮播图数据
@@ -14,7 +15,7 @@ class Index extends Component {
     }
     // 获取轮播图测试
     getSwiper = async () => {
-        const res = await axios.get("http://api-haoke-dev.itheima.net/home/swiper")
+        const res = await myAxios.get("http://api-haoke-dev.itheima.net/home/swiper")
         // console.log(res)
         if (res.status === 200) {
             // res.data.body.forEach((item) => {
