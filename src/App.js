@@ -11,8 +11,8 @@ function App() {
       <div className="App">
         {/* <Button type="primary">按钮</Button> */}
         <Link to='/home'>首页</Link>
-        <Link to='/cityList'>城市</Link>
-        <Link to='/map'>地图</Link>
+        <Link to='/cityList'>城市列表</Link>
+        <Link to='/map'>地图找房</Link>
         <Switch>
           {/* 一级路由 */}
           <Redirect exact from='/' to='/home'/>>

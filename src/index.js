@@ -6,6 +6,8 @@ import App from './App';
 // 引入组件样式
 // import 'antd-mobile/dist/antd-mobile.css'
 
+// 引入字体图标库
+import './assets/fonts/iconfont.css'
 
 ReactDOM.render(
   <React.StrictMode>
