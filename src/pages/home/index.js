@@ -15,10 +15,11 @@ import './index.css'
 class Home extends Component {
   state = {
     // 默认选中的标签
-    selectedTab: 'blueTab',
+    selectedTab: this.props.location.pathname,
   };
 
   render() {
+    // console.log(this.props.location.pathname)
     return (
       <div>
         <Route exact path="/home" component={Index} />
@@ -40,12 +41,13 @@ class Home extends Component {
               }
               selectedIcon={<i className="iconfont icon-ind" />
               }
-              selected={this.state.selectedTab === 'blueTab'}
-
+              selected={this.state.selectedTab === '/home'}
+              // 点击事件--->配置路由
               onPress={() => {
                 this.setState({
-                  selectedTab: 'blueTab',
+                  selectedTab: '/home',
                 });
+                this.props.history.push('/home')
               }}
             >
 
@@ -59,11 +61,12 @@ class Home extends Component {
               }
               title="找房"
               key="找房"
-              selected={this.state.selectedTab === 'redTab'}
+              selected={this.state.selectedTab === '/home/house'}
               onPress={() => {
                 this.setState({
-                  selectedTab: 'redTab',
+                  selectedTab: '/home/house',
                 });
+                this.props.history.push('/home/house')
               }}
             >
 
@@ -77,11 +80,12 @@ class Home extends Component {
               }
               title="我的"
               key="我的"
-              selected={this.state.selectedTab === 'greenTab'}
+              selected={this.state.selectedTab === '/home/profile'}
               onPress={() => {
                 this.setState({
-                  selectedTab: 'greenTab',
+                  selectedTab: '/home/profile',
                 });
+                this.props.history.push('/home/profile')
               }}
             >
 
