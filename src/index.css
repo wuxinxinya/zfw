@@ -21,9 +21,8 @@ li {
 }
 
 * {
+  /* touch-action: pan-y; */
+  /* 或者 */
+  touch-action: none;
   box-sizing: border-box;
 }
-/* .App a,.home a{
-    display: inline-block;
-    margin: 20px;
-} */

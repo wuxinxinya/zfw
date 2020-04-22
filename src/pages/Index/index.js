@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import { Carousel } from 'antd-mobile';
 // import axios from 'axios'
-import api, { BASE_URL } from '../../utils/axios'
+import { BASE_URL } from '../../utils/axios'
+import { getSwiper } from '../../utils/api/Home';
 
 class Index extends Component {
     state = {
@@ -10,21 +11,28 @@ class Index extends Component {
         swiper: [],
         // 设置轮播图默认高度
         imgHeight: 176,
+        // 是否自动播放
+        isPlay: false
     }
     componentDidMount() {
         this.getSwiper()
     }
     // 获取轮播图测试
     getSwiper = async () => {
-        const { status, data } = await api.get('/home/swiper')
+        const { status, data } = await getSwiper()
         // console.log(res)
         if (status === 200) {
             // res.data.body.forEach((item) => {
             //     // 处理图片路径
             //     item.imgSrc = `http://api-haoke-dev.itheima.net${item.imgSrc}`
             // })
+            // setState是异步的，要获取数据要在它的第二个回调函数中获取
             this.setState({
                 swiper: data
+            }, () => {
+                this.setState({
+                    isPlay: true
+                })
             })
         }
     }
@@ -33,8 +41,9 @@ class Index extends Component {
             <div>
                 {/* autoplay={true}轮播图自动播放 infinite无限循环*/}
                 <Carousel
-                    autoplay={true}
+                    autoplay={this.state.isPlay}
                     infinite
+                    autoplayInterval={2000}
                 >
                     {this.state.swiper.map(val => (
                         <a
