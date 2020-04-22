@@ -1,10 +1,42 @@
 /***默认首页*/
 import React, { Component } from 'react';
-import { Carousel } from 'antd-mobile';
+import { Carousel, Flex } from 'antd-mobile';
 // import axios from 'axios'
 import { BASE_URL } from '../../utils/axios'
 import { getSwiper } from '../../utils/api/Home';
-
+// 导入的是图片的64位格式
+import Nav1 from '../../assets/images/nav-1.png'
+import Nav2 from '../../assets/images/nav-2.png'
+import Nav3 from '../../assets/images/nav-3.png'
+import Nav4 from '../../assets/images/nav-4.png'
+import './index.css'
+// 首页栏目导航的数据
+const navs = [
+    {
+        id: 1,
+        img: Nav1,
+        title: '整租',
+        path: '/home/house'
+    },
+    {
+        id: 2,
+        img: Nav2,
+        title: '合租',
+        path: '/home/house'
+    },
+    {
+        id: 3,
+        img: Nav3,
+        title: '地图找房',
+        path: '/map'
+    },
+    {
+        id: 4,
+        img: Nav4,
+        title: '去出租',
+        path: '/rent/add'
+    }
+]
 class Index extends Component {
     state = {
         // 轮播图数据
@@ -38,7 +70,7 @@ class Index extends Component {
     }
     render() {
         return (
-            <div>
+            <div className='index'>
                 {/* autoplay={true}轮播图自动播放 infinite无限循环*/}
                 <Carousel
                     autoplay={this.state.isPlay}
@@ -65,6 +97,18 @@ class Index extends Component {
                         </a>
                     ))}
                 </Carousel>
+                {/* 栏目布局 */}
+                <Flex className='nav'>
+                    {navs.map((item) =>
+                        <Flex.Item key={item.id} onClick={() => {
+                            this.props.history.push(item.path)
+                        }}>
+                            <img src={item.img} />
+                            <p>{item.title}</p>
+                        </Flex.Item>
+                    )}
+
+                </Flex>
             </div>
         );
     }
