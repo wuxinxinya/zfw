@@ -21,6 +21,19 @@ class Home extends Component {
     // 默认选中的标签
     selectedTab: this.props.location.pathname,
   };
+  componentDidMount() {
+    // 监听路由变化
+    this.props.history.listen((location) => {
+      // console.log(222)
+      if (location.pathname !== this.state.selectedTab) {
+        // console.log(111);
+        this.setState({
+          selectedTab: location.pathname
+        })
+      }
+
+    })
+  }
   // tabBar标签页数据
   renderTabBar = () => {
     return (
@@ -40,9 +53,9 @@ class Home extends Component {
             selected={this.state.selectedTab === item.path}
             // 点击事件--->配置路由
             onPress={() => {
-              this.setState({
-                selectedTab: item.path,
-              });
+              // this.setState({
+              //   selectedTab: item.path,
+              // });
               this.props.history.push(item.path)
             }}
           />)
