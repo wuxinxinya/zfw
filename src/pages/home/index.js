@@ -21,9 +21,19 @@ class Home extends Component {
     // 默认选中的标签
     selectedTab: this.props.location.pathname,
   };
+  // 组件挂载
   componentDidMount() {
+    this.ListenRouter()
+  }
+  // 监听路由变化-----需要解绑（稍后改）
+  ListenRouter = () => {
+    // let id = setTimeout(() => {
+    //   console.log(1000)
+    // }, 2000)
+    // console.log(id)
+    // clearTimeout(id)
     // 监听路由变化-----需要解绑（稍后改）
-    this.props.history.listen((location) => {
+    this.sd = this.props.history.listen((location) => {
       // console.log(222)
       if (location.pathname !== this.state.selectedTab) {
         // console.log(111);
@@ -33,6 +43,12 @@ class Home extends Component {
       }
 
     })
+    // console.log('路由监听事件返回值',this.sd);输出结果为----->路由监听事件返回值 ƒ () {checkDOMListeners(-1);unlisten();}
+  }
+  // 组件销毁
+  componentWillUnmount() {
+    // 销毁路由监听事件
+    this.sd()
   }
   // tabBar标签页数据
   renderTabBar = () => {
