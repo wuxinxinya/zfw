@@ -1,12 +1,15 @@
 /***默认首页*/
 import React, { Component } from 'react';
-import { Carousel, Flex } from 'antd-mobile';
+import { Carousel, Flex, Grid } from 'antd-mobile';
 // import axios from 'axios'
 import { BASE_URL } from '../../utils/axios'
 import { getSwiper } from '../../utils/api/Home';
 import './index.scss'
 import navs from '../../utils/navconfig';
 
+const data1 = Array.from(new Array(4)).map(() => ({
+    icon: 'https://gw.alipayobjects.com/zos/rmsportal/WXoqXTHrSnRcUwEaQgXJ.png',
+}));
 class Index extends Component {
     state = {
         // 轮播图数据
@@ -93,6 +96,27 @@ class Index extends Component {
             </div>
         )
     }
+    // 宫格布局
+    renderGrid = () => {
+        return (
+            <Grid data={data1}
+                columnNum={2}
+                hasLine={false}
+                // 关闭默认正方形
+                square={false}
+                renderItem={dataItem => (
+                    // item结构
+                    <Flex className="grid-item" justify="between">
+                        <div className="desc">
+                            <h3>demo</h3>
+                            <p>100</p>
+                        </div>
+                        <img src={`http://localhost:8080${100}`} alt="" />
+                    </Flex>
+                )}
+            />
+        )
+    }
     render() {
         return (
             <div className='index'>
@@ -102,6 +126,8 @@ class Index extends Component {
                 {this.renderNavs()}
                 {/* 租房小组 */}
                 {this.renderHouse()}
+                {/* 宫格布局 */}
+                {this.renderGrid()}
             </div>
         );
     }
