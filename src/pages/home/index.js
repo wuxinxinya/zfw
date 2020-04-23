@@ -22,7 +22,7 @@ class Home extends Component {
     selectedTab: this.props.location.pathname,
   };
   componentDidMount() {
-    // 监听路由变化
+    // 监听路由变化-----需要解绑（稍后改）
     this.props.history.listen((location) => {
       // console.log(222)
       if (location.pathname !== this.state.selectedTab) {
