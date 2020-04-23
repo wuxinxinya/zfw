@@ -6,3 +6,11 @@ export function getSwiper() {
   // 返回的是promise对象
   return api.get('/home/swiper')
 }
+// 租房小组
+export function getGroups(area='AREA|88cff55c-aaa4-e2e0'){
+  return api.get('/home/groups',{
+    params:{
+      area
+    }
+  })
+}

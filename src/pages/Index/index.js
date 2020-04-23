@@ -3,24 +3,26 @@ import React, { Component } from 'react';
 import { Carousel, Flex, Grid } from 'antd-mobile';
 // import axios from 'axios'
 import { BASE_URL } from '../../utils/axios'
-import { getSwiper } from '../../utils/api/Home';
+import { getSwiper, getGroups } from '../../utils/api/Home';
 import './index.scss'
 import navs from '../../utils/navconfig';
 
-const data1 = Array.from(new Array(4)).map(() => ({
-    icon: 'https://gw.alipayobjects.com/zos/rmsportal/WXoqXTHrSnRcUwEaQgXJ.png',
-}));
+
 class Index extends Component {
     state = {
         // 轮播图数据
         swiper: [],
         // 设置轮播图默认高度
+        // 租房小组数据
+        groups: [],
+        // 设置轮播图的默认高度
         imgHeight: 176,
         // 是否自动播放
         isPlay: false
     }
     componentDidMount() {
         this.getSwiper()
+        this.getGroups()
     }
     // 获取轮播图测试
     getSwiper = async () => {
@@ -38,6 +40,15 @@ class Index extends Component {
                 this.setState({
                     isPlay: true
                 })
+            })
+        }
+    }
+    // 获取租房小组数据
+    getGroups = async () => {
+        let { status, data } = await getGroups()
+        if (status === 200) {
+            this.setState({
+                groups: data
             })
         }
     }
@@ -93,30 +104,29 @@ class Index extends Component {
                     <h3>租房小组</h3>
                     <span>更多</span>
                 </Flex>
-            </div>
-        )
-    }
-    // 宫格布局
-    renderGrid = () => {
-        return (
-            <Grid data={data1}
+                {/* // 宫格布局 */}
+                <Grid 
+                data={this.state.groups}
                 columnNum={2}
                 hasLine={false}
                 // 关闭默认正方形
                 square={false}
-                renderItem={dataItem => (
+                renderItem={item => (
                     // item结构
-                    <Flex className="grid-item" justify="between">
+                    <Flex key={item.id} className="grid-item" justify="between">
                         <div className="desc">
-                            <h3>demo</h3>
-                            <p>100</p>
+                            <h3>{item.title}</h3>
+                            <p>{item.desc}</p>
                         </div>
-                        <img src={`http://localhost:8080${100}`} alt="" />
+                        <img src={`${BASE_URL}${item.imgSrc}`} alt="" />
                     </Flex>
                 )}
             />
+            </div>
         )
     }
+    
+   
     render() {
         return (
             <div className='index'>
@@ -126,8 +136,7 @@ class Index extends Component {
                 {this.renderNavs()}
                 {/* 租房小组 */}
                 {this.renderHouse()}
-                {/* 宫格布局 */}
-                {this.renderGrid()}
+                
             </div>
         );
     }
