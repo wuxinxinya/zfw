@@ -14,3 +14,10 @@ export function getGroups(area='AREA|88cff55c-aaa4-e2e0'){
     }
   })
 }
+export function getNews(area='AREA|88cff55c-aaa4-e2e0'){
+  return api.get('/home/news',{
+    params:{
+      area
+    }
+  })
+}

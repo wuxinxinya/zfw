@@ -1,9 +1,9 @@
 /***默认首页*/
 import React, { Component } from 'react';
-import { Carousel, Flex, Grid } from 'antd-mobile';
+import { Carousel, Flex, Grid, WingBlank } from 'antd-mobile';
 // import axios from 'axios'
 import { BASE_URL } from '../../utils/axios'
-import { getSwiper, getGroups } from '../../utils/api/Home';
+import { getSwiper, getGroups, getNews } from '../../utils/api/Home';
 import './index.scss'
 import navs from '../../utils/navconfig';
 
@@ -15,43 +15,85 @@ class Index extends Component {
         // 设置轮播图默认高度
         // 租房小组数据
         groups: [],
+        // 资讯列表数据
+        news: [],
         // 设置轮播图的默认高度
         imgHeight: 176,
         // 是否自动播放
         isPlay: false
     }
     componentDidMount() {
-        this.getSwiper()
-        this.getGroups()
+        // this.getSwiper()
+        // this.getGroups()
+        // this.getNews()
+        this.getAllDatas()
     }
-    // 获取轮播图测试
-    getSwiper = async () => {
-        const { status, data } = await getSwiper()
-        // console.log(res)
-        if (status === 200) {
-            // res.data.body.forEach((item) => {
-            //     // 处理图片路径
-            //     item.imgSrc = `http://api-haoke-dev.itheima.net${item.imgSrc}`
-            // })
-            // setState是异步的，要获取数据要在它的第二个回调函数中获取
-            this.setState({
-                swiper: data
-            }, () => {
+    //代码重构（优化） 获取首页所有接口的数据    Promise.all()静态方法
+    getAllDatas = async () => {
+        // const p1=Promise.resolve(1)  //返回promise对象==》new Promise
+        // const p2=Promise.resolve([{a:4},{b:5}])
+        // let res=await Promise.all([getSwiper(),getGroups(),getNews()])
+        // 数组的解构
+        try {
+            let [swiper, groups, news] = await Promise.all([getSwiper(), getGroups(), getNews()])
+            // console.log(res);
+            // console.log(swiper,groups,news);
+            if (swiper.status === 200 && groups.status === 200 && news.status === 200) {
                 this.setState({
-                    isPlay: true
+                    swiper: swiper.data,
+                    groups: groups.data,
+                    news: news.data
+                }, () => {
+                    this.setState({
+                        isPlay: true
+                    })
                 })
-            })
+            }
+        } catch (error) {
+            console.log(error)
         }
+
     }
-    // 获取租房小组数据
-    getGroups = async () => {
-        let { status, data } = await getGroups()
-        if (status === 200) {
-            this.setState({
-                groups: data
-            })
-        }
-    }
+    // // 获取轮播图测试
+    // getSwiper = async () => {
+    //     const { status, data } = await getSwiper()
+    //     // console.log(res)
+    //     if (status === 200) {
+    //         // res.data.body.forEach((item) => {
+    //         //     // 处理图片路径
+    //         //     item.imgSrc = `http://api-haoke-dev.itheima.net${item.imgSrc}`
+    //         // })
+    //         // setState是异步的，要获取数据要在它的第二个回调函数中获取
+    //         this.setState({
+    //             swiper: data
+    //         }, () => {
+    //             this.setState({
+    //                 isPlay: true
+    //             })
+    //         })
+    //     }
+    // }
+    // // 获取租房小组数据
+    // getGroups = async () => {
+    //     let { status, data } = await getGroups()
+    //     if (status === 200) {
+    //         this.setState({
+    //             groups: data
+    //         })
+    //     }
+    // }
+    // // 获取资讯列表的数据
+    // getNews = async () => {
+    //     let { status, data } = await getNews()
+    //     if (status === 200) {
+    //         this.setState({
+    //             news: data
+    //         })
+    //     }
+    // }
+
+
+
     // 渲染轮播图{/* autoplay={true}轮播图自动播放 infinite无限循环*/}
     renderSwiper = () => {
         return (
@@ -99,34 +141,54 @@ class Index extends Component {
     // 租房小组
     renderHouse = () => {
         return (
-            <div className="group">
+            <>
                 <Flex className="group-title" justify="between">
                     <h3>租房小组</h3>
                     <span>更多</span>
                 </Flex>
                 {/* // 宫格布局 */}
-                <Grid 
-                data={this.state.groups}
-                columnNum={2}
-                hasLine={false}
-                // 关闭默认正方形
-                square={false}
-                renderItem={item => (
-                    // item结构
-                    <Flex key={item.id} className="grid-item" justify="between">
-                        <div className="desc">
-                            <h3>{item.title}</h3>
-                            <p>{item.desc}</p>
-                        </div>
-                        <img src={`${BASE_URL}${item.imgSrc}`} alt="" />
-                    </Flex>
-                )}
-            />
-            </div>
+                <Grid
+                    data={this.state.groups}
+                    columnNum={2}
+                    hasLine={false}
+                    // 关闭默认正方形
+                    square={false}
+                    renderItem={item => (
+                        // item结构
+                        <Flex key={item.id} className="grid-item" justify="between">
+                            <div className="desc">
+                                <h3>{item.title}</h3>
+                                <p>{item.desc}</p>
+                            </div>
+                            <img src={`${BASE_URL}${item.imgSrc}`} alt="" />
+                        </Flex>
+                    )}
+                />
+            </>
         )
     }
-    
-   
+
+    // 渲染最新资讯
+    renderNews() {
+        return this.state.news.map(item => (
+            <div className="news-item" key={item.id}>
+                <div className="imgwrap">
+                    <img
+                        className="img"
+                        src={`${BASE_URL}${item.imgSrc}`}
+                        alt=""
+                    />
+                </div>
+                <Flex className="content" direction="column" justify="between">
+                    <h3 className="title">{item.title}</h3>
+                    <Flex className="info" justify="between">
+                        <span>{item.from}</span>
+                        <span>{item.date}</span>
+                    </Flex>
+                </Flex>
+            </div>
+        ))
+    }
     render() {
         return (
             <div className='index'>
@@ -135,8 +197,14 @@ class Index extends Component {
                 {/* 栏目布局 */}
                 {this.renderNavs()}
                 {/* 租房小组 */}
-                {this.renderHouse()}
-                
+                <div className="group">
+                    {this.renderHouse()}
+                </div>
+                {/* 最新资讯 */}
+                <div className="news">
+                    <h3 className="group-title">最新资讯</h3>
+                    <WingBlank size="md">{this.renderNews()}</WingBlank>
+                </div>
             </div>
         );
     }
