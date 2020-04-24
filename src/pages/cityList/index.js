@@ -1,30 +1,52 @@
 // 获取城市列表--->选择
 import React, { Component } from 'react';
-import { getCityList ,getHotCity} from '../../utils/api/city/index'
+import { getCityList, getHotCity } from '../../utils/api/city/index'
 import { getCurCity } from '../../utils';
+import { List, AutoSizer } from 'react-virtualized';
+
+import './index.scss'
+import { NavBar,Icon } from 'antd-mobile';
+// 本地数据
+const list = Array.from(new Array(100)).map((item, index) => {
+    return { name: index }
+})
 
 class CityList extends Component {
     componentDidMount() {
         this.getCityList()
     }
+    rowRenderer = ({
+        key, // Unique key within array of rows
+        index, // Index of row within collection
+        isScrolling, // The List is currently being scrolled
+        isVisible, // This row is visible within the List (eg it is not an overscanned row)
+        style, // Style object to be applied to row (to position it)
+    }) => {
+        return (
+            <div key={key} style={style}>
+                {index}
+            </div>
+        );
+    }
+
     // 获取城市列表数据
     getCityList = async () => {
         const { status, data } = await getCityList()
         if (status === 200) {
-            let { cityList, cityIndex}=this.formatCities(data)
+            let { cityList, cityIndex } = this.formatCities(data)
             // 加入热门城市数据
-            const {status:st, data:hot}=await getHotCity()
-            if(st===200){
-                cityList['hot']=hot
+            const { status: st, data: hot } = await getHotCity()
+            if (st === 200) {
+                cityList['hot'] = hot
                 cityIndex.unshift('hot')
             }
             // 加入当前城市
-            const res=await getCurCity()
+            const res = await getCurCity()
             // console.log(res);
-            cityList['#']=[res]
+            cityList['#'] = [res]
             cityIndex.unshift('#')
 
-            console.log( cityList, cityIndex);
+            console.log(cityList, cityIndex);
         }
 
     }
@@ -62,9 +84,34 @@ class CityList extends Component {
     }
     render() {
         return (
-            <div>
+            <div className='cityList'>
+                 {/* 导航栏 */}
+                 <NavBar
+                    mode="dark"
+                    icon={<Icon type="left" />}
+                    onLeftClick={() => this.props.history.goBack()}
+                    
+                >城市选择</NavBar>
+                {/* 城市列表 */}
+                {/* <List
+                    width={300}
+                    height={300}
+                    rowCount={list.length}
+                    rowHeight={20}
+                    rowRenderer={this.rowRenderer}
+                /> */}
 
-                城市100110000
+                <AutoSizer>
+                    {({ height, width }) => (
+                        <List
+                            height={height}
+                            rowCount={list.length}
+                            rowHeight={60}
+                            rowRenderer={this.rowRenderer}
+                            width={width}
+                        />
+                    )}
+                </AutoSizer>
             </div>
         );
     }
