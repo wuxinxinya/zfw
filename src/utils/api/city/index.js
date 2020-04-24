@@ -8,4 +8,12 @@ export function getCityInfo(name){
     }
   })
 }
+// 获取城市列表数据
+export function getCityList(level=1){
+  return api.get('/area/city',{
+    params:{
+     level
+    }
+  })
+}
 
