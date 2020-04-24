@@ -1,6 +1,6 @@
 import React from 'react';
 // import { Button } from 'antd-mobile';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
+import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import Home from './pages/home'
 import CityList from './pages/cityList'
 import Map from './pages/map'
