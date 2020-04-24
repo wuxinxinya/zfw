@@ -23,6 +23,18 @@ class CityList extends Component {
     componentDidMount() {
         this.getCityList()
     }
+    // 格式化列表的title
+    // 格式化字母
+    formatLetter(letter) {
+        switch (letter) {
+            case 'hot':
+                return '热门城市';
+            case '#':
+                return '当前城市';
+            default:
+                return letter.toUpperCase();
+        }
+    }
     rowRenderer = ({
         key, // Unique key within array of rows
         index, // Index of row within collection
@@ -30,10 +42,18 @@ class CityList extends Component {
         isVisible, // This row is visible within the List (eg it is not an overscanned row)
         style, // Style object to be applied to row (to position it)
     }) => {
+        const { cityList, cityIndex } = this.state
+        // 对象的键
+        let letter = cityIndex[index]
+        // console.log(letter);
+        // 对象的值
+        let item = cityList[letter]
+        // console.log(letter, item);
+
         return (
             <div key={key} style={style} className="city-item">
-                <div className="title">A</div>
-                <div className="name">安庆</div>
+                <div className="title">{this.formatLetter(letter)}</div>
+                {item.map((item) => <div key={item.value} className='name'>{item.label}</div>)}
             </div>
         );
     }
