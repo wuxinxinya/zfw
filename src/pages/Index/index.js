@@ -6,7 +6,8 @@ import { BASE_URL } from '../../utils/axios'
 import { getSwiper, getGroups, getNews } from '../../utils/api/Home';
 import './index.scss'
 import navs from '../../utils/navconfig';
-import { getCityInfo } from '../../utils/api/city';
+import { getCurCity } from '../../utils';
+// import { getCityInfo } from '../../utils/api/city';
 
 
 class Index extends Component {
@@ -24,7 +25,7 @@ class Index extends Component {
         currCity: {
             label: '',
             value: ''
-          },
+        },
         // 设置轮播图的默认高度
         imgHeight: 176,
         // 是否自动播放
@@ -37,28 +38,35 @@ class Index extends Component {
         this.getAllDatas()
         this.getCurCity()
     }
-    // 根据百度地图获取当前定位的城市
-    getCurCity = () => {
-        // function myFun(result) {
-        //     var cityName = result.name;
-        //     console.log("当前定位城市:" + cityName);
-        //     // 调用接口获取城市详细信息
-        // }
-        // 根据IP定位当前城市的类LocalCity（构造函数）
-        //因为百度地图在public/index.html中通过script引入的，所以BMap挂载在window
-        var myCity = new window.BMap.LocalCity();
-        // 调用获取定位城市实例
-        //  myCity.get(myFun)
-        myCity.get(async(result)=>{
-            const {status,data}=await getCityInfo(result.name)
-            if(status===200){
-                this.setState({
-                    currCity:data
-                })
-            }
-            
-        });
+    getCurCity = async () => {
+        const res = await getCurCity()
+        this.setState({
+            currCity: res
+        })
+
     }
+    // // 根据百度地图获取当前定位的城市
+    // getCurCity = () => {
+    //     // function myFun(result) {
+    //     //     var cityName = result.name;
+    //     //     console.log("当前定位城市:" + cityName);
+    //     //     // 调用接口获取城市详细信息
+    //     // }
+    //     // 根据IP定位当前城市的类LocalCity（构造函数）
+    //     //因为百度地图在public/index.html中通过script引入的，所以BMap挂载在window
+    //     var myCity = new window.BMap.LocalCity();
+    //     // 调用获取定位城市实例
+    //     //  myCity.get(myFun)
+    //     myCity.get(async(result)=>{
+    //         const {status,data}=await getCityInfo(result.name)
+    //         if(status===200){
+    //             this.setState({
+    //                 currCity:data
+    //             })
+    //         }
+
+    //     });
+    // }
     //代码重构（优化） 获取首页所有接口的数据    Promise.all()静态方法
     getAllDatas = async () => {
         // const p1=Promise.resolve(1)  //返回promise对象==》new Promise

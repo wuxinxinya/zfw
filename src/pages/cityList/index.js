@@ -1,6 +1,7 @@
 // 获取城市列表--->选择
 import React, { Component } from 'react';
 import { getCityList ,getHotCity} from '../../utils/api/city/index'
+import { getCurCity } from '../../utils';
 
 class CityList extends Component {
     componentDidMount() {
@@ -17,7 +18,12 @@ class CityList extends Component {
                 cityList['hot']=hot
                 cityIndex.unshift('hot')
             }
-            
+            // 加入当前城市
+            const res=await getCurCity()
+            // console.log(res);
+            cityList['#']=[res]
+            cityIndex.unshift('#')
+
             console.log( cityList, cityIndex);
         }
 
