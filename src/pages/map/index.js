@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { NavBar, Icon } from 'antd-mobile';
 import './index.scss'
 // 地图找房
 
@@ -22,10 +23,15 @@ class Map extends Component {
     render() {
         return (
             <div className='mapBox'>
-                <div id='container'>
-                    {/* 地图 */}
-
-                </div>
+                {/* 导航栏 */}
+                <NavBar
+                    mode="dark"
+                    icon={<Icon type="left" />}
+                    onLeftClick={() => this.props.history.goBack()}
+                    
+                >地图找房</NavBar>
+                {/* 地图 */}
+                <div id='container'> </div>
             </div>
         );
     }

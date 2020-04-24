@@ -1,5 +1,7 @@
+// 加上导航NavBar之后，map页面出现滚动条----解决方案，高度减去NavBar高度
+//注意calc(100% - 45px)减号前后的空格
 .mapBox {
-  height: 100%;
+  height: calc(100% - 45px);
   #container {
     height: 100%;
   }
