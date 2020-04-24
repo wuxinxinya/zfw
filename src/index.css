@@ -26,3 +26,6 @@ li {
   /* touch-action: none; */
   box-sizing: border-box;
 }
+#root,.App{
+  height:100%
+}

@@ -33,6 +33,8 @@ class Home extends Component {
     // console.log(id)
     // clearTimeout(id)
     // 监听路由变化-----需要解绑（稍后改）
+    // console.log(this);
+    
     this.sd = this.props.history.listen((location) => {
       // console.log(222)
       if (location.pathname !== this.state.selectedTab) {
