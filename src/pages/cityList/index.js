@@ -1,6 +1,6 @@
 // 获取城市列表--->选择
 import React, { Component } from 'react';
-import { getCityList } from '../../utils/api/city/index'
+import { getCityList ,getHotCity} from '../../utils/api/city/index'
 
 class CityList extends Component {
     componentDidMount() {
@@ -11,8 +11,14 @@ class CityList extends Component {
         const { status, data } = await getCityList()
         if (status === 200) {
             let { cityList, cityIndex}=this.formatCities(data)
-            console.log( cityList, cityIndex);
+            // 加入热门城市数据
+            const {status:st, data:hot}=await getHotCity()
+            if(st===200){
+                cityList['hot']=hot
+                cityIndex.unshift('hot')
+            }
             
+            console.log( cityList, cityIndex);
         }
 
     }
