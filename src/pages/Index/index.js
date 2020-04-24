@@ -1,11 +1,12 @@
 /***默认首页*/
 import React, { Component } from 'react';
-import { Carousel, Flex, Grid, WingBlank,SearchBar } from 'antd-mobile';
+import { Carousel, Flex, Grid, WingBlank, SearchBar } from 'antd-mobile';
 // import axios from 'axios'
 import { BASE_URL } from '../../utils/axios'
 import { getSwiper, getGroups, getNews } from '../../utils/api/Home';
 import './index.scss'
 import navs from '../../utils/navconfig';
+import { getCityInfo } from '../../utils/api/city';
 
 
 class Index extends Component {
@@ -18,7 +19,12 @@ class Index extends Component {
         // 资讯列表数据
         news: [],
         // 头部搜索的关键词
-        keyword:[],
+        keyword: [],
+        // 城市相关信息
+        currCity: {
+            label: '',
+            value: ''
+          },
         // 设置轮播图的默认高度
         imgHeight: 176,
         // 是否自动播放
@@ -29,6 +35,29 @@ class Index extends Component {
         // this.getGroups()
         // this.getNews()
         this.getAllDatas()
+        this.getCurCity()
+    }
+    // 根据百度地图获取当前定位的城市
+    getCurCity = () => {
+        // function myFun(result) {
+        //     var cityName = result.name;
+        //     console.log("当前定位城市:" + cityName);
+        //     // 调用接口获取城市详细信息
+        // }
+        // 根据IP定位当前城市的类LocalCity（构造函数）
+        //因为百度地图在public/index.html中通过script引入的，所以BMap挂载在window
+        var myCity = new window.BMap.LocalCity();
+        // 调用获取定位城市实例
+        //  myCity.get(myFun)
+        myCity.get(async(result)=>{
+            const {status,data}=await getCityInfo(result.name)
+            if(status===200){
+                this.setState({
+                    currCity:data
+                })
+            }
+            
+        });
     }
     //代码重构（优化） 获取首页所有接口的数据    Promise.all()静态方法
     getAllDatas = async () => {
@@ -95,14 +124,14 @@ class Index extends Component {
     // }
     // 渲染顶部导航
     renderTopNav = () => {
-        const {push}=this.props.history
+        const { push } = this.props.history
         return (
             <Flex justify="around" className="topNav">
                 <div className="searchBox">
-                    <div className="city" onClick={()=>{
+                    <div className="city" onClick={() => {
                         push('/cityList')
                     }}>
-                        北京<i className="iconfont icon-arrow" />
+                        {this.state.currCity.label}<i className="iconfont icon-arrow" />
                     </div>
                     <SearchBar
                         value={this.state.keyword}
@@ -110,7 +139,7 @@ class Index extends Component {
                         placeholder="请输入小区或地址"
                     />
                 </div>
-                <div className="map" onClick={()=>{
+                <div className="map" onClick={() => {
                     push('/map')
                 }}>
                     <i key="0" className="iconfont icon-map" />
