@@ -1,15 +1,51 @@
 // 获取城市列表--->选择
 import React, { Component } from 'react';
-import {getCityList} from '../../utils/api/city/index'
+import { getCityList } from '../../utils/api/city/index'
 
 class CityList extends Component {
-    componentDidMount(){
+    componentDidMount() {
         this.getCityList()
     }
     // 获取城市列表数据
     getCityList = async () => {
-        const res = await getCityList()
-        console.log(res);
+        const { status, data } = await getCityList()
+        if (status === 200) {
+            let { cityList, cityIndex}=this.formatCities(data)
+            console.log( cityList, cityIndex);
+            
+        }
+
+    }
+    // 按城市首字母归类城市数据
+    formatCities = (data) => {
+        // 归类的数据
+        let cityList = {}
+        // 遍历数据归类
+        data.forEach((item) => {
+            // 获取当前城市的首字母    slice(0,1)截取字符-------slice() 方法提取某个字符串的一部分，并返回一个新的字符串，且不会改动原字符串。
+            let first = item.short.slice(0, 1)
+            // console.log(first);
+            if (!cityList[first]) {
+                // 不存在
+                cityList[first] = [item]
+            } else {
+                // 存在
+                cityList[first].push(item)
+            }
+        })
+        // console.log('首字母归类完的数据', cityList);
+        // 获取归类的首字母数据----键（索引）
+        let cityIndex = Object.keys(cityList).sort()
+        // console.log('获取归类的首字母数据', cityIndex);
+        // // 遍历列表
+        // cityIndex.map((item) => {
+        //     console.log(item, cityList[item]);
+
+        // })
+        return {
+            cityList,
+            cityIndex
+        }
 
     }
     render() {
