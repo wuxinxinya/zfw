@@ -5,13 +5,21 @@ import { getCurCity } from '../../utils';
 import { List, AutoSizer } from 'react-virtualized';
 
 import './index.scss'
-import { NavBar,Icon } from 'antd-mobile';
-// 本地数据
-const list = Array.from(new Array(100)).map((item, index) => {
-    return { name: index }
-})
+import { NavBar, Icon } from 'antd-mobile';
+// 本地数据---假数据
+// const list = Array.from(new Array(100)).map((item, index) => {
+//     return { name: index }
+// })
 
 class CityList extends Component {
+    // 设置状态数据
+    state = {
+        // 归类的城市数据
+        cityIndex: [],
+        // 归类的城市数据的索引
+        cityList: {}
+    }
+
     componentDidMount() {
         this.getCityList()
     }
@@ -23,8 +31,9 @@ class CityList extends Component {
         style, // Style object to be applied to row (to position it)
     }) => {
         return (
-            <div key={key} style={style}>
-                {index}
+            <div key={key} style={style} className="city-item">
+                <div className="title">A</div>
+                <div className="name">安庆</div>
             </div>
         );
     }
@@ -45,8 +54,12 @@ class CityList extends Component {
             // console.log(res);
             cityList['#'] = [res]
             cityIndex.unshift('#')
-
-            console.log(cityList, cityIndex);
+            // 响应式
+            this.setState({
+                cityList,
+                cityIndex
+            })
+            // console.log(cityList, cityIndex);
         }
 
     }
@@ -85,12 +98,12 @@ class CityList extends Component {
     render() {
         return (
             <div className='cityList'>
-                 {/* 导航栏 */}
-                 <NavBar
+                {/* 导航栏 */}
+                <NavBar
                     mode="dark"
                     icon={<Icon type="left" />}
                     onLeftClick={() => this.props.history.goBack()}
-                    
+
                 >城市选择</NavBar>
                 {/* 城市列表 */}
                 {/* <List
@@ -105,8 +118,8 @@ class CityList extends Component {
                     {({ height, width }) => (
                         <List
                             height={height}
-                            rowCount={list.length}
-                            rowHeight={60}
+                            rowCount={this.state.cityIndex.length}
+                            rowHeight={120}
                             rowRenderer={this.rowRenderer}
                             width={width}
                         />
