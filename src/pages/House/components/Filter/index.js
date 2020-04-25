@@ -15,8 +15,21 @@ const titleSelectedStatus = {
 }
 export default class Filter extends Component {
   // 定义状态数据
-  state={
-    titleSelectedStatus 
+  state = {
+    titleSelectedStatus
+  }
+  //提供： 修改高亮数据的方法
+  onTitleClick = (type) => {
+    // console.log(this);
+    // console.log('点击了谁', type);
+  
+    let newSelected = { ...titleSelectedStatus,[type]:true }
+   console.log(newSelected);
+   
+    this.setState({
+      titleSelectedStatus: newSelected
+    })
+
   }
   render() {
     return (
@@ -26,7 +39,7 @@ export default class Filter extends Component {
 
         <div className={styles.content}>
           {/* 标题栏 */}
-          <FilterTitle titleSelectedStatus={this.state.titleSelectedStatus}/>
+          <FilterTitle onTitleClick={this.onTitleClick} titleSelectedStatus={this.state.titleSelectedStatus} />
 
           {/* 前三个菜单对应的内容： */}
           {/* <FilterPicker /> */}
