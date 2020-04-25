@@ -40,18 +40,30 @@ export default class Filter extends Component {
     const { openType } = this.state;
     return openType === 'area' || openType === 'mode' || openType === 'price'
   }
+  // 点击确定的时候执行
+  onOk=()=>{
+    this.setState({
+      openType:''
+    })
+  }
+  // 点击取消
+  onCancle=()=>{
+    this.setState({
+      openType:''
+    })
+  }
   render() {
     return (
       <div className={styles.root}>
         {/* 前三个菜单的遮罩层 */}
-        {this.isShowPicker() ? <div className={styles.mask} /> : null}
+        {this.isShowPicker() ? <div onClick={this.onCancle} className={styles.mask} /> : null}
 
         <div className={styles.content}>
           {/* 标题栏 */}
           <FilterTitle onTitleClick={this.onTitleClick} titleSelectedStatus={this.state.titleSelectedStatus} />
 
           {/* 前三个菜单对应的内容： */}
-          {this.isShowPicker() ? <FilterPicker /> : null}
+          {this.isShowPicker() ? <FilterPicker onOk={this.onOk} onCancle={this.onCancle}/> : null}
           {/* 最后一个菜单对应的内容： */}
           {/* <FilterMore /> */}
         </div>
