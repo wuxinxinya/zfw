@@ -16,34 +16,42 @@ const titleSelectedStatus = {
 export default class Filter extends Component {
   // 定义状态数据
   state = {
-    titleSelectedStatus
+    // 高亮的数据
+    titleSelectedStatus,
+    // 是否显示picker
+    openType: ''
   }
   //提供： 修改高亮数据的方法
   onTitleClick = (type) => {
     // console.log(this);
     // console.log('点击了谁', type);
-  
-    let newSelected = { ...titleSelectedStatus,[type]:true }
-   console.log(newSelected);
-   
+
+    let newSelected = { ...titleSelectedStatus, [type]: true }
+    console.log(newSelected);
+
     this.setState({
-      titleSelectedStatus: newSelected
+      titleSelectedStatus: newSelected,
+      openType: type
     })
 
+  }
+  // 是否显示前三个过滤器的内容---picker
+  isShowPicker = () => {
+    const { openType } = this.state;
+    return openType === 'area' || openType === 'mode' || openType === 'price'
   }
   render() {
     return (
       <div className={styles.root}>
         {/* 前三个菜单的遮罩层 */}
-        {/* <div className={styles.mask} /> */}
+        {this.isShowPicker() ? <div className={styles.mask} /> : null}
 
         <div className={styles.content}>
           {/* 标题栏 */}
           <FilterTitle onTitleClick={this.onTitleClick} titleSelectedStatus={this.state.titleSelectedStatus} />
 
           {/* 前三个菜单对应的内容： */}
-          {/* <FilterPicker /> */}
-
+          {this.isShowPicker() ? <FilterPicker /> : null}
           {/* 最后一个菜单对应的内容： */}
           {/* <FilterMore /> */}
         </div>
