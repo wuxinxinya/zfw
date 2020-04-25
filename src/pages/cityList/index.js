@@ -1,11 +1,10 @@
 // 获取城市列表--->选择
 import React, { Component } from 'react';
 import { getCityList, getHotCity } from '../../utils/api/city/index'
-import { getCurCity } from '../../utils';
+import CUR_CITY, { getCurCity, setLocal } from '../../utils';
 import { List, AutoSizer } from 'react-virtualized';
-
 import './index.scss'
-import { NavBar, Icon } from 'antd-mobile';
+import { NavBar, Icon, Toast } from 'antd-mobile';
 // 本地数据---假数据
 // const list = Array.from(new Array(100)).map((item, index) => {
 //     return { name: index }
@@ -35,6 +34,19 @@ class CityList extends Component {
                 return letter.toUpperCase();
         }
     }
+    // 切换城市
+    changeCity=(item)=>{
+        // 有数据---
+        const hasData = ['北京', '上海', '广州', '深圳'];
+        if(hasData.includes(item.label)){
+            // 更新当前城市数据
+            setLocal(CUR_CITY,JSON.stringify(item))
+            // 调到首页
+            this.props.history.push('/')
+        }else{
+            Toast.info('该城市暂无房源')
+        }
+    }
     rowRenderer = ({
         key, // Unique key within array of rows
         index, // Index of row within collection
@@ -53,7 +65,9 @@ class CityList extends Component {
         return (
             <div key={key} style={style} className="city-item">
                 <div className="title">{this.formatLetter(letter)}</div>
-                {item.map((item) => <div key={item.value} className='name'>{item.label}</div>)}
+                {item.map((item) => <div onClick={()=>{
+                    this.changeCity(item)
+                }} key={item.value} className='name'>{item.label}</div>)}
             </div>
         );
     }
@@ -120,7 +134,7 @@ class CityList extends Component {
         // console.log(index);----index索引
         
         const {cityList,cityIndex}=this.state
-        console.log(cityIndex);
+        // console.log(cityIndex);
         
         // 根据索引找到对应的键
         let curKey=cityIndex[index]

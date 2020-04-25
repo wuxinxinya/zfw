@@ -10,13 +10,13 @@ import { getCityInfo } from "./api/city";
 const CUR_CITY = 'cur_city'
 // 封装本地存储方法
 export const getLocal = (key) => {
-  return localStorage.getItem(key)
+  return sessionStorage.getItem(key)
 }
 export const setLocal = (key, val) => {
-  localStorage.setItem(key, val)
+  sessionStorage.setItem(key, val)
 }
 export const removeLocal = (key) => {
-  localStorage.removeItem(key)
+  sessionStorage.removeItem(key)
 }
 // 根据百度地图API获取定位城市名字
 const getCityName = async () => {
@@ -34,9 +34,9 @@ export async function getCurCity() {
   let res = await getCityName()
   // console.log(res);
   let reaName = res.substr(0, 2)
-  console.log(reaName);
+  // console.log(reaName);
 
-  if (!curCity || reaName !== curCity.label) {
+  if (!curCity) {
     // 没有---获取定位信息
     return new Promise(async(resolve, reject) => {
 
@@ -56,3 +56,4 @@ export async function getCurCity() {
 
   }
 }
+export default CUR_CITY
