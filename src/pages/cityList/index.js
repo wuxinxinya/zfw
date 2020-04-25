@@ -115,6 +115,18 @@ class CityList extends Component {
         }
 
     }
+    // 动态计算高度
+    excuHeight=({index})=>{
+        // console.log(index);----index索引
+        
+        const {cityList,cityIndex}=this.state
+        console.log(cityIndex);
+        
+        // 根据索引找到对应的键
+        let curKey=cityIndex[index]
+
+        return 36+cityList[curKey].length*50
+    }
     render() {
         return (
             <div className='cityList'>
@@ -139,7 +151,7 @@ class CityList extends Component {
                         <List
                             height={height}
                             rowCount={this.state.cityIndex.length}
-                            rowHeight={120}
+                            rowHeight={this.excuHeight}
                             rowRenderer={this.rowRenderer}
                             width={width}
                         />
