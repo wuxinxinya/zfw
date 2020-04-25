@@ -16,34 +16,36 @@ class CityList extends Component {
         // 归类的城市数据
         cityIndex: [],
         // 归类的城市数据的索引
-        cityList: {}
+        cityList: {},
+        // 当前滚动到位置的索引
+        activeIndex: 0
     }
 
     componentDidMount() {
         this.getCityList()
     }
     // 格式化列表的title
-    // 格式化字母
-    formatLetter(letter) {
+    // 格式化字母（处理热门城市和当前城市）
+    formatLetter(letter, first) {
         switch (letter) {
             case 'hot':
-                return '热门城市';
+                return first ? '热' : '热门城市';
             case '#':
-                return '当前城市';
+                return first ? '当' : '当前城市';
             default:
                 return letter.toUpperCase();
         }
     }
     // 切换城市
-    changeCity=(item)=>{
+    changeCity = (item) => {
         // 有数据---
         const hasData = ['北京', '上海', '广州', '深圳'];
-        if(hasData.includes(item.label)){
+        if (hasData.includes(item.label)) {
             // 更新当前城市数据
-            setLocal(CUR_CITY,JSON.stringify(item))
+            setLocal(CUR_CITY, JSON.stringify(item))
             // 调到首页
             this.props.history.push('/')
-        }else{
+        } else {
             Toast.info('该城市暂无房源')
         }
     }
@@ -65,7 +67,7 @@ class CityList extends Component {
         return (
             <div key={key} style={style} className="city-item">
                 <div className="title">{this.formatLetter(letter)}</div>
-                {item.map((item) => <div onClick={()=>{
+                {item.map((item) => <div onClick={() => {
                     this.changeCity(item)
                 }} key={item.value} className='name'>{item.label}</div>)}
             </div>
@@ -130,16 +132,52 @@ class CityList extends Component {
 
     }
     // 动态计算高度
-    excuHeight=({index})=>{
+    excuHeight = ({ index }) => {
         // console.log(index);----index索引
-        
-        const {cityList,cityIndex}=this.state
-        // console.log(cityIndex);
-        
-        // 根据索引找到对应的键
-        let curKey=cityIndex[index]
 
-        return 36+cityList[curKey].length*50
+        const { cityList, cityIndex } = this.state
+        // console.log(cityIndex);
+
+        // 根据索引找到对应的键
+        let curKey = cityIndex[index]
+
+        return 36 + cityList[curKey].length * 50
+    }
+
+    // 渲染右侧索引
+    renderCityIndex = () => {
+        const { cityIndex, activeIndex } = this.state;
+        return cityIndex.map((item, index) => {
+            return (
+                <li
+                    key={item}
+                    className="city-index-item"
+                    onClick={() => {
+                        // console.log(this.listRef.scrollToRow );
+                        this.listRef.scrollToRow(index)
+                        // this.setState({
+                        //     activeIndex: index
+                        // })
+                    }}
+                >
+                    <span className={activeIndex === index ? 'index-active' : ''}>
+                        {this.formatLetter(item, true)}
+                    </span>
+                </li>
+            )
+        })
+    }
+    // 每次渲染完都会执行
+    onRowsRendered = ({ startIndex }) => {
+        if (this.state.activeIndex !== startIndex) {
+            // console.log(startIndex);
+            // 有个多次执行的问题----加一个条件判断--解决
+            // startIndex当前滚动行的索引
+            this.setState({
+                activeIndex: startIndex
+            })
+        }
+
     }
     render() {
         return (
@@ -151,6 +189,11 @@ class CityList extends Component {
                     onLeftClick={() => this.props.history.goBack()}
 
                 >城市选择</NavBar>
+
+                {/* 右侧索引列表 */}
+                <ul className="city-index">
+                    {this.renderCityIndex()}
+                </ul>
                 {/* 城市列表 */}
                 {/* <List
                     width={300}
@@ -159,10 +202,13 @@ class CityList extends Component {
                     rowHeight={20}
                     rowRenderer={this.rowRenderer}
                 /> */}
-
+                {/* list的属性 scrollToAlignment='start'顶部对齐 */}
                 <AutoSizer>
                     {({ height, width }) => (
                         <List
+                            onRowsRendered={this.onRowsRendered}
+                            scrollToAlignment='start'
+                            ref={(ele) => this.listRef = ele}
                             height={height}
                             rowCount={this.state.cityIndex.length}
                             rowHeight={this.excuHeight}
