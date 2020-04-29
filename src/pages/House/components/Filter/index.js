@@ -130,7 +130,10 @@ export default class Filter extends Component {
       openType: '',
       // 处理高亮状态
       titleSelectedStatus: this.handlerSel()
-    },()=>{console.log('列表需要的数据：',this.formatFilters(this.selectedValues));
+    },()=>{
+      // console.log('列表需要的数据：',this.formatFilters(this.selectedValues));
+      // 子组件调用父组件的方法--->确定 传入用户选择的过滤器数据
+      this.props.onFilter(this.formatFilters(this.selectedValues))
     })
   }
   // 点击取消
