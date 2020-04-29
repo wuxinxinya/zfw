@@ -79,6 +79,8 @@ export default class Filter extends Component {
         newStatus[key]=true
       }else if(key==='price'&&cur[0]!=='null'){
         newStatus[key]=true
+      }else if(key==='more'&&cur.length>0){
+        newStatus[key]=true
       }else{
         newStatus[key]=false
       }
@@ -92,11 +94,12 @@ export default class Filter extends Component {
   }
   // 点击确定的时候执行
   onOk=(curSel)=>{
-    console.log('picker当前选中的数据：',curSel);
+    // console.log('picker当前选中的数据：',curSel);
+    
     // 存储到组件this实例上
     const {openType}=this.state
     this.selectedValues[openType]=curSel
-    
+    console.log('当前选中的过滤条件:',curSel,this.selectedValues);
     this.setState({
       openType:'',
       // 处理高亮状态
@@ -148,7 +151,7 @@ export default class Filter extends Component {
       const { roomType, oriented, floor, characteristic }=this.filterDatas
       let data={roomType, oriented, floor, characteristic}
       return (
-        <FilterMore data={data} onOk={this.onOk} onCancle={this.onCancle} />
+        <FilterMore value={this.selectedValues[openType]} data={data} onOk={this.onOk} onCancle={this.onCancle} />
       )
     }
   }
