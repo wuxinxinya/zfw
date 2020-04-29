@@ -14,10 +14,12 @@ export default class FilterMore extends Component {
   }
 
   render() {
+    // console.log(this.props);
+    const {onOk,onCancle}=this.props
     return (
       <div className={styles.root}>
         {/* 遮罩层 */}
-        <div className={styles.mask} />
+        <div onClick={onCancle}  className={styles.mask} />
 
         {/* 条件内容 */}
         <div className={styles.tags}>
@@ -37,7 +39,7 @@ export default class FilterMore extends Component {
         </div>
 
         {/* 底部按钮 */}
-        <FilterFooter className={styles.footer} />
+        <FilterFooter onOk={onOk} onCancle={onCancle} className={styles.footer} />
       </div>
     )
   }

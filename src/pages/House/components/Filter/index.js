@@ -139,6 +139,19 @@ export default class Filter extends Component {
       return <FilterPicker key={openType} data={data} value={curSel222} cols={cols} onOk={this.onOk} onCancle={this.onCancle}/>
     }
   }
+  // 渲染第四个筛选器
+  renderFilterMore=()=>{
+    const {openType}=this.state
+    if(openType==='more'){
+      // 传递后台过滤条件的数据
+      console.log(this.filterDatas);
+      const { roomType, oriented, floor, characteristic }=this.filterDatas
+      let data={roomType, oriented, floor, characteristic}
+      return (
+        <FilterMore data={data} onOk={this.onOk} onCancle={this.onCancle} />
+      )
+    }
+  }
   render() {
     return (
       <div className={styles.root}>
@@ -152,7 +165,7 @@ export default class Filter extends Component {
           {/* 前三个菜单对应的内容： */}
           {this.renderPicker()}
           {/* 最后一个菜单对应的内容： */}
-          {/* <FilterMore /> */}
+          {this.renderFilterMore()}
         </div>
       </div>
     )
