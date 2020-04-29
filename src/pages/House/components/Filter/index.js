@@ -144,7 +144,7 @@ export default class Filter extends Component {
     const {openType}=this.state
     if(openType==='more'){
       // 传递后台过滤条件的数据
-      console.log(this.filterDatas);
+      // console.log(this.filterDatas);
       const { roomType, oriented, floor, characteristic }=this.filterDatas
       let data={roomType, oriented, floor, characteristic}
       return (
