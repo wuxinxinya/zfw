@@ -17,9 +17,9 @@ const titleSelectedStatus = {
 }
 // 选中的数据
 const selectedValues={
-  area: [],
-  mode: [],
-  price: [],
+  area: ["area", "null"],
+  mode: ["null"],
+  price: ["null"],
   more: []
 }
 // 共用给一个组件
@@ -64,6 +64,27 @@ export default class Filter extends Component {
     })
 
   }
+  // 处理确定的时候，查询selectedValues对应的选择器是否有数据==》高亮对应的title
+  handlerSel=()=>{
+    // 存储新的高亮状态
+    const newStatus={...titleSelectedStatus}
+    // 遍历存储的选中数据，确定是否高亮
+    Object.keys(this.selectedValues).forEach((key)=>{
+      // 根据当前picker选中的值
+      let cur=this.selectedValues[key]
+      // 判断是否高亮
+      if(key==='area'&&(cur[1]!=='null'||cur[0]==='subway')){
+        newStatus[key]=true
+      }else if(key==='mode'&&cur[0]!=='null'){
+        newStatus[key]=true
+      }else if(key==='price'&&cur[0]!=='null'){
+        newStatus[key]=true
+      }else{
+        newStatus[key]=false
+      }
+    })
+    return newStatus
+  }
   // 是否显示前三个过滤器的内容---picker
   isShowPicker = () => {
     const { openType } = this.state;
@@ -75,14 +96,19 @@ export default class Filter extends Component {
     // 存储到组件this实例上
     const {openType}=this.state
     this.selectedValues[openType]=curSel
+    
     this.setState({
-      openType:''
+      openType:'',
+      // 处理高亮状态
+      titleSelectedStatus:this.handlerSel()
     })
   }
   // 点击取消
   onCancle=()=>{
     this.setState({
-      openType:''
+      openType:'',
+      // 处理高亮状态
+      titleSelectedStatus:this.handlerSel()
     })
   }
   // 渲染picker并提供对应的数据
