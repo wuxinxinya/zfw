@@ -85,7 +85,7 @@ class Home extends Component {
   render() {
     // console.log(this.props.location.pathname)
     return (
-      <div>
+      <div className="home">
         <Route exact path="/home" component={Index} />
         <Route path="/home/house" component={House} />
         <Route path="/home/profile" component={Profile} />
